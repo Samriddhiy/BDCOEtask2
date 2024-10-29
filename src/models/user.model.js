@@ -16,12 +16,6 @@ const userSchema= new Schema ({
     fullname:{
         type:String,
         required: true,
-        lowercase : true,
-        index: true
-    },
-    fullname:{
-        type:String,
-        required: true,
         index: true
     },
     password:{
