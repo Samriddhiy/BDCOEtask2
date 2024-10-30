@@ -1,10 +1,12 @@
+import connectDB from "./db/index.js"
+import dotenv from "dotenv"
 import express from "express"
-import User from "./models/user.model"
+import {User} from "./models/user.model.js"
 
-import cookieparser from "cookie-parser"
-
+import cookieParser from "cookie-parser"
 const app= express();
-
+dotenv.config({
+    path:"../.env"})
 app.use(express.json ());
 app.use(express.urlencoded ({extended: true}));
 
@@ -15,8 +17,8 @@ app.get('/', (req,res) => {
 app.post('/create', async (req, res) => {
     let{ username , email , password} = req.body;
 
-    let createdUser = await Usermodel.create({
-        username,
+    let createdUser = await User.create({
+        username, 
         email, 
         password
     })
@@ -30,6 +32,7 @@ app.listen(PORT, (err) =>{
         console.log("error in server", err);
     }
     else{
-        console.log("Server is listening on port", PORT);
+        connectDB()
+        console.log("Server is listening on port", PORT); 
     }
 });
