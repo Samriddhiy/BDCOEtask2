@@ -2,7 +2,6 @@ import connectDB from "./db/index.js"
 import cors from "cors"
 import dotenv from "dotenv"
 import express from "express"
-import {User} from "./models/user.model.js"
 
 import cookieParser from "cookie-parser"
 const app= express()
@@ -20,32 +19,26 @@ app.use(express.urlencoded ({extended: true}));
 app.use(express.static("public"));
 app.use(cookieParser())
 
-app.get('/', (req,res) => {
-    res.send("hello there this is working");
-})
+// routes import 
+import userRouter from './routes/user.routes.js'
 
-app.post('/create', async (req, res) => {
-    let{ username , email , password} = req.body;
+// routes declaration 
 
-    let createdUser = await User.create({
-        username, 
-        email, 
-        password
-    })
+app.use("/api/v1/users" , userRouter)
 
-    res.send(createdUser);
-});
+// route which is created by the above line is 
+// http://localhost:9324/api/v1/users/
+// iske aage jo chahe vo likha jayega like / register /login by routes only 
+// ye /users jo h vo prefix ban gaya h aage jo bhi hoga vo routes me jaake call hoga 
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, (err) =>{
-    if(err){
-        console.log("error in server", err);
-    }
-    else{
-        connectDB()
-        console.log("Server is listening on port", PORT); 
-    }
-});
+
+
+
+
+
+
+
+
 
 
 export  { app }
