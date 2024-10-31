@@ -17,6 +17,7 @@ const registerUser = asyncHandler ( async (req, res) => {
    // return response
    
    const {fullname , email , username , password } = req.body
+   console.log("email" , email);
    if(
       [fullname , email, username, password].some((field) =>
       field?.trim() ==="")
@@ -25,7 +26,7 @@ const registerUser = asyncHandler ( async (req, res) => {
    }
 
 
-   const existedUser = User.findOne({
+   const existedUser = await  User.findOne({
       $or: [{ username }, { email }]
    })
 
@@ -33,13 +34,13 @@ const registerUser = asyncHandler ( async (req, res) => {
       throw new ApiError (409 , "User with email and username already exist")
    }
 
-   const imageLocalPath = req.files?.image[0]?.path;
+  // const imageLocalPath = req.files?.image[0]?.path;
 
-   const image = await uploadOnCloudinary(imageLocalPath)
+   //const image = await uploadOnCloudinary(imageLocalPath)
 
    const user = await User.create({
       fullname,
-      image: image?.url || "",
+     // image: image?.url || "",
       email,
       password,
       username : username.toLowercase()
