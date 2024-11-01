@@ -23,17 +23,15 @@ export const verifyJWT = async(req, res, next) =>{
     }
  
     req.user = user;
-    next()
+    next();
    } catch (error) {
+      if(req.path === '/logout'){
+         return next();
+      }
     return res 
     .status(401)
     .json({message:"Invalid access token is used"});
     
    }
-
-
-
-
-
 
 }

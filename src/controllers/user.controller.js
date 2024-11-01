@@ -159,7 +159,8 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async(req, res ,next)=> {
   try {
-    await User.findByIdAndUpdate(
+    const {userId} = req.body;
+    await User.findByIdAndUpdate(userId||
       req.user._id,
       {
         $set: {
