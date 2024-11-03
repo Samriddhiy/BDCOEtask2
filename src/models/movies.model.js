@@ -33,6 +33,9 @@ const movieSchema = new mongoose.Schema ({
     },
     countries: {
         type: [String],
+    },
+    type: {
+        type: String,
     }
 }); 
 
