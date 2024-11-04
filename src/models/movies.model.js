@@ -16,6 +16,9 @@ const movieSchema = new mongoose.Schema ({
     languages: {
         type: [String],
     },
+    rated : {
+        type: String,
+    },
     released: {
         type: Date,
     },

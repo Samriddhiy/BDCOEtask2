@@ -190,10 +190,41 @@ const logoutUser = async(req, res ,next)=> {
   }
 }; 
 
-const serachMovies = async(req , res) => {
+const searchMovies = async(req , res) => {
   try { 
-    const { genres , type , cast , released , languages }
-    
+    console.log(req.query);
+    const { genres, type, cast, year, languages, title } =req.query;
+
+    let filter = {}; 
+
+    if (genres) {
+      const genresArray = genres.split(",").map(genre => genre.trim());
+      filter.genres = { $in: genresArray };
+    }
+    if (type) filter.type = type;
+
+    if (cast) filter.cast = { 
+      $in: cast.split(",").map(name => name.trim()) 
+    };
+
+    if (year) filter.year = year;
+
+    if (languages) filter.languages = {
+      $in: languages.split( ",")
+    };
+
+    if (title) filter.title = new RegExp(title , "i");
+
+    const movies = await Movie.find(filter).limit(50);
+
+    return res
+    .status(200)
+    .json(new ApiResponse (200, movies ,"Movies fetched successfully"));
+
+
+
+
+
   } catch (error) {
     console.error("Error in fetching movies:" , error);
     res.status(401)
@@ -205,5 +236,6 @@ const serachMovies = async(req , res) => {
 export { 
   registerUser ,
   loginUser,
-  logoutUser
+  logoutUser, 
+  searchMovies
 };
