@@ -193,7 +193,7 @@ const logoutUser = async(req, res ,next)=> {
 const searchMovies = async(req , res) => {
   try { 
     console.log(req.query);
-    const { genres, type, cast, year, languages, title } =req.query;
+    const { genres, type, cast, year, languages, title, directors } =req.query;
 
     let filter = {}; 
 
@@ -214,6 +214,10 @@ const searchMovies = async(req , res) => {
     };
 
     if (title) filter.title = new RegExp(title , "i");
+
+    if (directors) {
+      filter.directors = { $elemMatch: { $regex: new RegExp(directors, "i") } };
+    }
 
     const movies = await Movie.find(filter).limit(50);
 
